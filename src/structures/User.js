@@ -10,11 +10,11 @@ class User {
 
 		/**
 		 * The plain user object itself.
-		 * @name User#user
+		 * @name User#raw
 		 * @readonly
 		 * @type {object}
 		 */
-		Object.defineProperty(this, 'user', { value: user });
+		Object.defineProperty(this, 'raw', { value: user });
 
 		/**
 		 * The user's avatar URL.

@@ -8,7 +8,7 @@ class Check {
 		if (options.path && typeof options.path !== 'string') throw new TypeError('options.path must be a string.');
 		if (!options.path.startsWith('/')) throw new SyntaxError('options.path must start with \'/\' ');
 		if (options.token && typeof options.token !== 'string') throw new TypeError('options.token must be a string.');
-		if (options.normal && typeof options.normal !== 'boolean') throw new TypeError('options.normal must be boolean.');
+		if (options.raw && typeof options.raw !== 'boolean') throw new TypeError('options.raw must be boolean.');
 		return options;
 	}
 }

@@ -26,6 +26,8 @@ class WebhookInfo {
 		 * @type {User}
 		 */
 		this.user = new User(obj.user);
+
+		Object.defineProperty(this, 'raw', { value: obj });
 	}
 }
 

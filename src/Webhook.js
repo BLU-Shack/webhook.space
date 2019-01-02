@@ -62,19 +62,19 @@ class Webhook extends EventEmitter {
 	get handler() {
 		return async (req, res) => {
 			const close = (code, message) => {
-				res.sendStatus(code);
-				this.emit(Events.error, message);
+				res.status(code).send(message);
+				this.emit(Events.error, message, req.headers);
 			};
 
 			if (!this.active) return close(412, 'Deactivated');
 			else if (req.method !== 'POST') return close(405, 'Only POST Method is supported');
 			else if (req.headers['content-type'] !== 'application/json') return close(415, 'Media Type must be application/json');
-			else if (req.headers['user-agent'] !== 'botlist.space Webhooks (https://botlist.space)') return close(403, 'Invalid User Agent');
+			else if (req.headers['user-agent'] !== 'botlist.space Webhooks (https://botlist.space)') return close(403, 'Forbidden');
 			else if (this.options.token && req.headers['authorization'] !== this.options.token) return close(403, 'Forbidden');
 
 			try {
 				const contents = await stream(req);
-				this.emit(Events.upvote, !this.options.normal ? new WebhookInfo(contents) : contents, req.headers);
+				this.emit(Events.upvote, !this.options.raw ? new WebhookInfo(contents) : contents, req.headers);
 				res.status(200).send('OK');
 			} catch (error) {
 				this.emit(Events.error, error);

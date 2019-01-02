@@ -18,11 +18,11 @@ declare module 'webhook.space' {
 		public open(): Webhook;
 
 		public on(event: 'upvote', listener: (contents: WebhookInfo, headers: Headers) => void): this;
-		public on(event: 'error', listener: (error: Error) => void): this;
+		public on(event: 'error', listener: (error: Error | string, headers: Headers) => void): this;
 		public on(event: string, listener: Function): this;
 
 		public once(event: 'upvote', listener: (contents: WebhookInfo, headers: Headers) => void): this;
-		public once(event: 'error', listener: (error: Error | string) => void): this;
+		public once(event: 'error', listener: (error: Error | string, headers: Headers) => void): this;
 		public once(event: string, listener: Function): this;
 	}
 
@@ -30,8 +30,10 @@ declare module 'webhook.space' {
 	export class WebhookInfo {
 		constructor(info: any);
 		public recipientID: string;
-		public timestamp: number
-		public user: User
+		public timestamp: number;
+		public user: User;
+
+		private raw: string;
 	}
 
 	/** Represents a user through a webhook POST. */
@@ -45,6 +47,8 @@ declare module 'webhook.space' {
 		public username: string;
 		public readonly tag: string;
 
+		private readonly raw: string;
+
 		public toString(): string;
 	}
 
@@ -52,7 +56,7 @@ declare module 'webhook.space' {
 		port?: number,
 		path?: string,
 		token?: string,
-		normal?: boolean
+		raw?: boolean
 	}
 
 	type WebhookEvent = 'upvote' | 'error';
